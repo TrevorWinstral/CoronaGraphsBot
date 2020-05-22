@@ -1,5 +1,6 @@
 import csv
 import matplotlib.pyplot as plt
+import matplotlib.ticker as mticker
 import numpy as np
 import pandas as pd
 from sys import argv
@@ -51,6 +52,7 @@ def main():
     plt.title(f'New Cases (Last {LAST_DAYS} Days) - {COUNTRY}')
     plt.savefig(f'Images/{COUNTRY}_NewCases_{LAST_DAYS}Days')
     #plt.show()
+    plt.tight_layout()
     plt.clf()
 
     # Active Cases
@@ -63,18 +65,40 @@ def main():
     plt.title(f'Active Cases (Last {LAST_DAYS} Days) - {COUNTRY}')
     plt.legend()
     plt.savefig(f'Images/{COUNTRY}_ActiveCases_{LAST_DAYS}Days')
-    #plt.show()
+    #plt.show()    
+    plt.tight_layout()
     plt.clf()
 
     
     # Total Cases
+    #'''
+    fig, ax = plt.subplots()
+    ax.semilogy(country['Date'], country['Confirmed'], label='Total Cases')
+    ax.semilogy(country['Date'], country['Recovered'], label='Recovered', c='green')
+    
+    ax2 = ax.twinx()
+    ax2.semilogy(country['Date'], country['Deaths'], label='Deaths', c='black')
+
+    locs, labels = get_ticks(steps, plt.xlim())
+    ax.set_xticks(locs)
+    ax.set_xticklabels(labels, rotation=70)
+    plt.title(f'Total Cases (Last {LAST_DAYS} Days) (Logarithmic) - {COUNTRY}')
+    ax.yaxis.set_minor_formatter(mticker.ScalarFormatter())
+    ax2.yaxis.set_minor_formatter(mticker.ScalarFormatter())
+    ax.legend()
+    ax2.legend()
+    ax2.set_ylabel('Deaths')
+    '''
     plt.semilogy(country['Date'], country['Confirmed'], label='Total Cases')
     plt.semilogy(country['Date'], country['Recovered'], label='Recovered', c='green')
+    plt.semilogy(country['Date'], country['Deaths'], label='Deaths', c='black')
 
     locs, labels = get_ticks(steps, plt.xlim())
     plt.xticks(locs, labels, rotation=70)
     plt.title(f'Total Cases (Last {LAST_DAYS} Days) (Logarithmic) - {COUNTRY}')
     plt.legend()
+    '''
+    plt.tight_layout()
     plt.savefig(f'Images/{COUNTRY}_TotalCases_{LAST_DAYS}Days')
     #plt.show()
     plt.clf()

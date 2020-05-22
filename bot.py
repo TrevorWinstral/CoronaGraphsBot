@@ -45,13 +45,30 @@ def send_welcome(message):
     except:
         user_dict[message.chat.id] = default_dict
         logger.log(20, msg='New User!')
-    bot.reply_to(message, f"Hello, Welcome the the COVID Graphs ChatBot?\nTry /start, /help, or /menu\nCurrent Settings: {user_dict[chat_id]['Country']}, {user_dict[chat_id]['Days']} Days")
+    bot.reply_to(message, f"Hello, Welcome the the COVID Graphs ChatBot?\nTry /start, /help, /ExplainData or /menu\nCurrent Settings: {user_dict[chat_id]['Country']}, {user_dict[chat_id]['Days']} Days")
 
 
 @bot.message_handler(commands=['help'])
 def help_fct(message):
     chat_id = message.chat.id
     bot.send_message(chat_id, text='For questions, contact Trevor Winstral on Twitter: https://twitter.com/TrevorWinstral\nUse /menu to return')
+    bot.send_message(chat_id, text='/start /menu /ExplainData')
+
+@bot.message_handler(commands=['ExplainData'])
+def explain_data(message):
+    chat_id = message.chat.id
+    bot.send_message(chat_id,
+    """
+Data is from John Hopkins University: https://github.com/datasets/covid-19
+
+Active Cases is the sum of the last 7 days of new cases
+
+You can view the Source Code at: https://github.com/TrevorWinstral/CoronaGraphsBot
+
+For more questions see /help
+    """)
+    bot.send_message(chat_id, text="/menu /start /help")
+
 
 @bot.message_handler(commands=['menu'])
 def menu(message):
@@ -63,7 +80,7 @@ def menu(message):
     itembtnd = types.KeyboardButton('/SetTimeFrame')
     markup.row(itembtna, itembtnv)
     markup.row(itembtnc, itembtnd)
-    bot.send_message(chat_id, text="Menu - Choose an Option:", reply_markup=markup)
+    bot.send_message(chat_id, text="/Menu - Choose an Option:", reply_markup=markup)
 
 
 @bot.message_handler(commands=['SetCountry'])
