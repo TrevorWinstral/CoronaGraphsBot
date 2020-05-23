@@ -84,8 +84,8 @@ def main():
     ax.set_xticklabels(labels, rotation=70)
     plt.title(f'Total Cases (Last {LAST_DAYS} Days) (Logarithmic) - {COUNTRY}')
     ax2.yaxis.set_minor_formatter(mticker.ScalarFormatter())
-    ax.legend()
-    ax2.legend()
+    ax.legend(loc='upper left')
+    ax2.legend(loc='lower right')
     ax2.set_ylabel('Deaths')
     '''
     plt.semilogy(country['Date'], country['Confirmed'], label='Total Cases')
