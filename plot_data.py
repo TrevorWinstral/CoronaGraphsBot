@@ -83,7 +83,6 @@ def main():
     ax.set_xticks(locs)
     ax.set_xticklabels(labels, rotation=70)
     plt.title(f'Total Cases (Last {LAST_DAYS} Days) (Logarithmic) - {COUNTRY}')
-    ax.yaxis.set_minor_formatter(mticker.ScalarFormatter())
     ax2.yaxis.set_minor_formatter(mticker.ScalarFormatter())
     ax.legend()
     ax2.legend()

@@ -6,7 +6,7 @@ with open('continents.pkl','rb') as inFile:
 
 os.system('python get_data.py')
 
-Days = [0, 7, 14, 30, 60]
+Days = [0, 14, 30, 60]
 for country in countries:
     for days in Days:
         print(f'Creating {country} {days} Days')
