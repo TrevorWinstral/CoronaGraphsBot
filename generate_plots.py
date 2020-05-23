@@ -10,4 +10,4 @@ Days = [0, 14, 30, 60]
 for country in countries:
     for days in Days:
         print(f'Creating {country} {days} Days')
-        os.system(f'python -W ignore plot_data.py {country} {days}')
+        os.system(f'python -W ignore plot_data.py {country.replace(" ", "_")} {days}')

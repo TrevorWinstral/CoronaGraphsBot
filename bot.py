@@ -189,7 +189,7 @@ def set_time_frame(message):
 def get_update(message):
     global user_dict
     chat_id = message.chat.id
-    graphTypes = ['TotalCases', 'ActiveCases', 'NewCases']
+    graphTypes = ['Deaths', 'TotalCases', 'ActiveCases', 'NewCases']
     print(f'A user has requested: {user_dict[chat_id]}')
     imgFiles = [
         f"{user_dict[chat_id]['Country']}_{graph}_{user_dict[chat_id]['Days']}Days.png" for graph in graphTypes]
@@ -204,6 +204,7 @@ def get_update(message):
 
             if chat_id in admins:
                 bot.send_message(chat_id, text=f'File: {img}')
+
 
     bot.send_message(chat_id, text='/menu /start /help')
 
