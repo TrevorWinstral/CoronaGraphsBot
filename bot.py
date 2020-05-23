@@ -34,6 +34,19 @@ OC = [country for country in country_dict if country_dict[country] == 'OC']
 region_dict = {'EU': EU, 'SA': SA, 'NA': NA, 'AF': AF, 'AS': AS, 'OC': OC}
 Countries = [country for country in country_dict]
 
+START = time.time()
+def time_check():
+    global START
+    diff = time.time() - START
+    if diff >= (60*10): # update at most every 10 minutes
+        logger.log(20, msg=f'Total Users: {len(user_dict)}')
+        with open('settings.pkl', 'wb') as outFile:
+            pickle.dump(user_dict, outFile)
+            logger.log(
+                20, msg=f'{time.strftime("%a, %d %b %Y %H:%M:%S", time.gmtime())} Dumping User Preferences to pickle')
+        START = time.time()
+    return
+
 
 @bot.message_handler(commands=['start'])
 def send_welcome(message):
@@ -114,24 +127,26 @@ def choose_country_in_region(message):
 
     region = region_dict[message.text[1:]]
     for country in region:
-        markup.add(types.KeyboardButton(f'/{country}'))
+        markup.add(types.KeyboardButton(f"/{country.replace(' ', '_')}"))
 
     bot.send_message(chat_id, text="Choose a Country:", reply_markup=markup)
 
 
-@bot.message_handler(commands=[f'{Country}' for Country in Countries])
+@bot.message_handler(commands=[f'{Country.replace(" ", "_")}' for Country in Countries])
 def country_set(message):
     global user_dict
     chat_id = message.chat.id
 
     try:
-        user_dict[chat_id]['Country'] = message.text[1:]
+        user_dict[chat_id]['Country'] = message.text[1:].replace('_', ' ')
     except:
         user_dict[chat_id] = default_dict
-        user_dict[chat_id]['Country'] = message.text[1:]
+        user_dict[chat_id]['Country'] = message.text[1:].replace('_', ' ')
 
     bot.send_message(
         chat_id, text=f"Country set to {user_dict[chat_id]['Country']}")
+    
+    time_check()
     menu(message)
 
 
@@ -165,6 +180,8 @@ def set_time_frame(message):
         user_dict[chat_id]['Days'] = days_dict[message.text]
     bot.send_message(
         chat_id, text=f'Time Frame set to {message.text[1:]} Days')
+
+    time_check()
     menu(message)
 
 
@@ -184,6 +201,9 @@ def get_update(message):
             photo.close()
         except:
             bot.send_message(chat_id, text=f'No Image found for {img.split("_")[1]}')
+
+            if chat_id in admins:
+                bot.send_message(chat_id, text=f'File: {img}')
 
     bot.send_message(chat_id, text='/menu /start /help')
 
@@ -206,16 +226,8 @@ def pkl_dump(message):
         bot.send_message(chat_id, text='Insufficient Permissions')
 
 
-start = time.time()
-while True:
-    now = time.time()
-    if now-start >= 5*60:  # Update user_dict at most every 5 minutes
-        start= now
-        logger.log(20, msg=f'Total Users: {len(user_dict)}')
-        with open('settings.pkl', 'wb') as outFile:
-            pickle.dump(user_dict, outFile)
-            logger.log(
-                20, msg=f'{time.strftime("%a, %d %b %Y %H:%M:%S", time.gmtime())} Dumping User Preferences to pickle')
+
+while True:        
     try:
         bot.polling(none_stop=False, interval=0, timeout=1)
     except Exception as e:
