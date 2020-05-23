@@ -51,7 +51,7 @@ def send_welcome(message):
 @bot.message_handler(commands=['help'])
 def help_fct(message):
     chat_id = message.chat.id
-    bot.send_message(chat_id, text='For questions, contact Trevor Winstral on Twitter: https://twitter.com/TrevorWinstral\nUse /menu to return')
+    bot.send_message(chat_id, text='For questions, contact Trevor Winstral on Twitter: https://twitter.com/TrevorWinstral')
     bot.send_message(chat_id, text='/start /menu /ExplainData')
 
 @bot.message_handler(commands=['ExplainData'])
@@ -70,7 +70,7 @@ For more questions see /help
     bot.send_message(chat_id, text="/menu /start /help")
 
 
-@bot.message_handler(commands=['menu'])
+@bot.message_handler(commands=['menu', 'Menu'])
 def menu(message):
     chat_id = message.chat.id
     markup = types.ReplyKeyboardMarkup()
@@ -88,13 +88,15 @@ def country_select(message):
     chat_id = message.chat.id
     markup = types.ReplyKeyboardMarkup()
 
+    bot.send_message(chat_id, text=f"To go back use /menu")
+
     itembtna = types.KeyboardButton('/NA')
     itembtnb = types.KeyboardButton('/SA')
     itembtnc = types.KeyboardButton('/EU')
     itembtnd = types.KeyboardButton('/AF')
     itembtne = types.KeyboardButton('/AS')
     itembtnf = types.KeyboardButton('/OC')
-    itembtns = types.KeyboardButton('/start')
+    itembtns = types.KeyboardButton('/Menu')
 
     markup.row(itembtna, itembtnb, itembtnc)
     markup.row(itembtnd, itembtne, itembtnf)
@@ -106,6 +108,8 @@ def country_select(message):
 def choose_country_in_region(message):
     global user_dict
     chat_id = message.chat.id
+
+    bot.send_message(chat_id, text=f"To go back use /menu")
     markup = types.ReplyKeyboardMarkup(row_width=3)
 
     region = region_dict[message.text[1:]]
@@ -136,7 +140,6 @@ def choose_time_frame(message):
     chat_id = message.chat.id
     markup = types.ReplyKeyboardMarkup(row_width=3)
 
-    markup.add(types.KeyboardButton('/7'))
     markup.add(types.KeyboardButton('/14'))
     markup.add(types.KeyboardButton('/30'))
     markup.add(types.KeyboardButton('/60'))
@@ -144,16 +147,16 @@ def choose_time_frame(message):
     markup.add(types.KeyboardButton('/menu'))
 
     bot.send_message(
-        chat_id, text='Time Frame can be set to last 7, 14, 30, 60, or All Days', reply_markup=markup)
+        chat_id, text='Time Frame can be set to last 14, 30, 60, or All Days', reply_markup=markup)
     
 
 
-@bot.message_handler(commands=['7', '14', '30', '60', 'All'])
+@bot.message_handler(commands=['14', '30', '60', 'All'])
 def set_time_frame(message):
     global user_dict
     chat_id = message.chat.id
 
-    days_dict = {'/7': 7, '/14': 14, '/30': 30, '/60': 60, '/All': 0}
+    days_dict = {'/14': 14, '/30': 30, '/60': 60, '/All': 0}
 
     try:
         user_dict[chat_id]['Days'] = days_dict[message.text]
