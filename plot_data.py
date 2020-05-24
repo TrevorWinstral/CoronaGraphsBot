@@ -4,6 +4,7 @@ import matplotlib.ticker as mticker
 import numpy as np
 import pandas as pd
 from sys import argv
+import pickle
 plt.style.use('ggplot')
 
 DATA_FILE= 'data.csv'
@@ -112,6 +113,28 @@ def main():
     plt.savefig(f'Images/{COUNTRY}_Deaths_{LAST_DAYS}Days')
     #plt.show()
     plt.clf()
+    plt.cla()
+
+
+    # The Numbers
+    columnLabels =  ['Confirmed', 'Recovered', 'Deaths', 'New', 'Active 7 Day']
+    fig, ax = plt.subplots()
+
+    # hide axes
+    fig.patch.set_visible(False)
+    ax.axis('off')
+    ax.axis('tight')
+
+    df = pd.DataFrame(country[columnLabels][-10:].astype(int), columns=columnLabels)
+
+    row_Labels = country['Date'][-10:].astype(str)
+    ax.table(cellText=df.values, colLabels=df.columns, rowLabels=row_Labels.values, loc='center')
+    fig.tight_layout()
+    plt.tight_layout()
+    plt.savefig(f'Images/{COUNTRY}_RawTable')
+    plt.clf()
+    plt.cla()
+
 
     return
 

@@ -206,7 +206,25 @@ def get_update(message):
                 bot.send_message(chat_id, text=f'File: {img}')
 
 
+    bot.send_message(chat_id, text='/menu /start /help /GetTheNumbers')
+
+
+@bot.message_handler(commands=['GetTheNumbers'])
+def serve_the_numbers(message):
+    chat_id = message.chat.id
+
+    try:
+        photo = open(f"Images/{user_dict[chat_id]['Country']}_RawTable.png", 'rb')
+        bot.send_photo(chat_id, photo)
+        photo.close()
+    except:
+        bot.send_message(chat_id, text=f'No Image found for {user_dict[chat_id]["Country"]} RawTable')
+
+        if chat_id in admins:
+            bot.send_message(chat_id, text=f"File: Images/{user_dict[chat_id]['Country']}_RawTable.png")
+
     bot.send_message(chat_id, text='/menu /start /help')
+
 
 @bot.message_handler(commands=['Dump', 'dump'])
 def pkl_dump(message):
