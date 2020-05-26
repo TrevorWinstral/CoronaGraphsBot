@@ -1,4 +1,4 @@
-import csv
+import csv, os
 import matplotlib
 matplotlib.use('Agg')
 import matplotlib.pyplot as plt
@@ -8,8 +8,9 @@ import pandas as pd
 from sys import argv
 import pickle
 plt.style.use('ggplot')
-
-DATA_FILE= 'data.csv'
+#print('this is a test')
+rel_path = "/".join(os.path.abspath(__file__).split('/')[:-1])
+DATA_FILE= os.path.join(rel_path, 'data.csv')
 
 def main():
     try:
@@ -56,7 +57,7 @@ def main():
     plt.legend()
     plt.title(f'New Cases ({quick_dict[LAST_DAYS]} Days) - {COUNTRY}')
     plt.tight_layout()
-    plt.savefig(f'Images/{COUNTRY}_NewCases_{LAST_DAYS}Days')
+    plt.savefig(os.path.join(rel_path, f'Images/{COUNTRY}_NewCases_{LAST_DAYS}Days'))
     #plt.show()
     plt.clf()
 
@@ -70,7 +71,7 @@ def main():
     plt.title(f'Active Cases ({quick_dict[LAST_DAYS]} Days) - {COUNTRY}')
     plt.legend()
     plt.tight_layout()
-    plt.savefig(f'Images/{COUNTRY}_ActiveCases_{LAST_DAYS}Days')
+    plt.savefig(os.path.join(rel_path, f'Images/{COUNTRY}_ActiveCases_{LAST_DAYS}Days'))
     #plt.show()    
     plt.clf()
 
@@ -112,7 +113,7 @@ def main():
     #ax2.yaxis.set_minor_formatter(mticker.ScalarFormatter())
     ax.legend()
     plt.tight_layout()
-    plt.savefig(f'Images/{COUNTRY}_Deaths_{LAST_DAYS}Days')
+    plt.savefig(os.path.join(rel_path, f'Images/{COUNTRY}_Deaths_{LAST_DAYS}Days'))
     #plt.show()
     plt.clf()
     plt.cla()
@@ -133,7 +134,7 @@ def main():
     ax.table(cellText=df.values, colLabels=df.columns, rowLabels=row_Labels.values, loc='center')
     fig.tight_layout()
     plt.tight_layout()
-    plt.savefig(f'Images/{COUNTRY}_RawTable')
+    plt.savefig(os.path.join(rel_path, f'Images/{COUNTRY}_RawTable'))
     plt.clf()
     plt.cla()
 
