@@ -8,6 +8,7 @@ import pandas as pd
 from sys import argv
 import pickle
 plt.style.use('ggplot')
+os.nice(0)
 #print('this is a test')
 rel_path = "/".join(os.path.abspath(__file__).split('/')[:-1])
 DATA_FILE= os.path.join(rel_path, 'data.csv')
