@@ -35,10 +35,12 @@ region_dict = {'EU': EU, 'SA': SA, 'NA': NA, 'AF': AF, 'AS': AS, 'OC': OC}
 Countries = [country for country in country_dict]
 
 START = time.time()
+
+
 def time_check():
     global START
     diff = time.time() - START
-    if diff >= (60*10): # update at most every 10 minutes
+    if diff >= (60*10):  # update at most every 10 minutes
         logger.log(20, msg=f'Total Users: {len(user_dict)}')
         with open('settings.pkl', 'wb') as outFile:
             pickle.dump(user_dict, outFile)
@@ -48,7 +50,7 @@ def time_check():
     return
 
 
-@bot.message_handler(commands=['start'])
+@bot.message_handler(commands=['start', 'Start'])
 def send_welcome(message):
     global user_dict
     chat_id = message.chat.id
@@ -58,29 +60,38 @@ def send_welcome(message):
     except:
         user_dict[message.chat.id] = default_dict
         logger.log(20, msg='New User!')
-    bot.reply_to(message, f"Hello, Welcome the the COVID Graphs ChatBot?\nTry /start, /help, /ExplainData or /menu\nCurrent Settings: {user_dict[chat_id]['Country']}, {user_dict[chat_id]['Days']} Days")
+    bot.reply_to(message, f"Hello, Welcome the COVID Graphs ChatBot!\nTry /start, /help, /ExplainData. /menu will allow you to set your country and get updated! If you don't see a menu come up after that, click on the square icon in the message field.\nCurrent Settings: {user_dict[chat_id]['Country']}, {user_dict[chat_id]['Days']} Days")
 
 
 @bot.message_handler(commands=['help'])
 def help_fct(message):
     chat_id = message.chat.id
-    bot.send_message(chat_id, text='For questions, contact Trevor Winstral on Twitter: https://twitter.com/TrevorWinstral')
+    bot.send_message(
+        chat_id, text='For questions, contact Trevor Winstral on Twitter: https://twitter.com/TrevorWinstral')
     bot.send_message(chat_id, text='/start /menu /ExplainData')
+
 
 @bot.message_handler(commands=['ExplainData'])
 def explain_data(message):
     chat_id = message.chat.id
     bot.send_message(chat_id,
-    """
-Data is from John Hopkins University: https://github.com/datasets/covid-19
+                     """
+Data is from John Hopkins University: https://github.com/datasets/covid-19, and is updated once every day
 
-Active Cases is the sum of the last 7 days of new cases
+Active Cases is the sum of the last 7 days of new cases, and is only an estimate.
 
 You can view the Source Code at: https://github.com/TrevorWinstral/CoronaGraphsBot
 
 For more questions see /help
     """)
     bot.send_message(chat_id, text="/menu /start /help")
+
+
+@bot.message_handler(commands=['thanks'])
+def thank(message):
+    chat_id = message.chat.id
+    bot.send_message(
+        chat_id, text="A big thank you to Vitek and Pavel for their help in testing, looking at my code, and making feature reccomendations!")
 
 
 @bot.message_handler(commands=['menu', 'Menu'])
@@ -93,7 +104,8 @@ def menu(message):
     itembtnd = types.KeyboardButton('/SetTimeFrame')
     markup.row(itembtna, itembtnv)
     markup.row(itembtnc, itembtnd)
-    bot.send_message(chat_id, text="/Menu - Choose an Option:", reply_markup=markup)
+    bot.send_message(chat_id, text="/Menu - Choose an Option:",
+                     reply_markup=markup)
 
 
 @bot.message_handler(commands=['SetCountry'])
@@ -145,7 +157,7 @@ def country_set(message):
 
     bot.send_message(
         chat_id, text=f"Country set to {user_dict[chat_id]['Country']}")
-    
+
     time_check()
     menu(message)
 
@@ -163,7 +175,6 @@ def choose_time_frame(message):
 
     bot.send_message(
         chat_id, text='Time Frame can be set to last 14, 30, 60, or All Days', reply_markup=markup)
-    
 
 
 @bot.message_handler(commands=['14', '30', '60', 'All'])
@@ -205,7 +216,6 @@ def get_update(message):
             if chat_id in admins:
                 bot.send_message(chat_id, text=f'File: {img}')
 
-
     bot.send_message(chat_id, text='/menu /start /help /GetTheNumbers')
 
 
@@ -245,10 +255,10 @@ def pkl_dump(message):
         bot.send_message(chat_id, text='Insufficient Permissions')
 
 
-
-while True:        
+while True:
     try:
-        bot.polling(none_stop=False, interval=0, timeout=1)
+        bot.polling(none_stop=False, interval=0, timeout=5)
     except Exception as e:
         print(e)
-        time.sleep(15)
+        bot.stop_polling()
+        time.sleep(5)
