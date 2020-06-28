@@ -91,7 +91,7 @@ For more questions see /help
 def thank(message):
     chat_id = message.chat.id
     bot.send_message(
-        chat_id, text="A big thank you to Vitek and Pavel for their help in testing, looking at my code, and making feature reccomendations!")
+        chat_id, text="A big thank you to Vitek and Pavel for their help in testing, looking at my code, and making feature reccomendations! Also thank you to Sebastien for hosting the bot on his server!")
 
 
 @bot.message_handler(commands=['menu', 'Menu'])
