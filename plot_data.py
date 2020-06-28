@@ -7,11 +7,15 @@ import numpy as np
 import pandas as pd
 from sys import argv
 import pickle
+import warnings
+
+warnings.filterwarnings("ignore")
 plt.style.use('ggplot')
 os.nice(0)
 #print('this is a test')
 rel_path = "/".join(os.path.abspath(__file__).split('/')[:-1])
 DATA_FILE= os.path.join(rel_path, 'data.csv')
+
 
 def main():
     try:
@@ -28,8 +32,8 @@ def main():
     data.drop('Unnamed: 0', 1, inplace=True)
 
     Days = [0, 14, 30, 60]
-    for LAST_DAYS in Days:
-        for COUNTRY in countries:
+    for COUNTRY in countries:
+        for LAST_DAYS in Days:
             print(f"Plotting {COUNTRY} {LAST_DAYS} Days")
 
             country = data[data['Country'] == COUNTRY]

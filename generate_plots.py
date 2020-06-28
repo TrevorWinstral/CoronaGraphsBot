@@ -15,3 +15,4 @@ while True:
         for days in Days:
             print(f'Creating {country} {days} Days')
             os.system(f'python3 -W ignore {os.path.join(rel_path, "plot_data.py")} {country.replace(" ", "_")} {days}')
+    break
