@@ -30,6 +30,8 @@ def main():
     Days = [0, 14, 30, 60]
     for LAST_DAYS in Days:
         for COUNTRY in countries:
+            print(f"Plotting {COUNTRY} {LAST_DAYS} Days")
+
             country = data[data['Country'] == COUNTRY]
             country.loc[:,'New'] = country.loc[:,'Confirmed'].diff()
             country.loc[:,'7-Day'] = country.loc[:,'New'].rolling(5).mean()
