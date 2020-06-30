@@ -25,7 +25,7 @@ def main():
         COUNTRY = 'Switzerland'
         LAST_DAYS = 0
 
-    with open('continents.pkl', 'rb') as inFile:
+    with open(os.path.join(rel_path, 'continents.pkl'), 'rb') as inFile:
         countries = pickle.load(inFile)
 
     data = pd.read_csv(DATA_FILE, quotechar='"')
@@ -48,7 +48,7 @@ def main():
                 stepsize = int(np.floor(stepsize))
                 if stepsize==0:
                     stepsize = 1
-                ticks = country['Date'][::stepsize]
+                ticks = country['Date'][::-1*stepsize][::-1]
                 return(locs, ticks)
 
             quick_dict = {0: 'All', 14:'Last 14', 30:'Last 30', 60:'Last 60'} # mostly just to convert 0 days to all days in title
@@ -61,7 +61,7 @@ def main():
             plt.scatter(country['Date'], country['New'], s=3)
             plt.plot(country['Date'], country['New'], linewidth=0.5, label='New Cases Per Day')
             plt.plot(country['Date'], country['7-Day'], linewidth=2, label='7 Day Rolling Average', c='green')
-            
+
             current = country['7-Day'].iloc[-1]
             plt.plot(country['Date'], [current for i in country['7-Day']], linestyle='--', c='orange', label='Current Level')
 
@@ -110,7 +110,7 @@ def main():
             '''
 
             plt.tight_layout()
-            plt.savefig(f'Images/{COUNTRY}_TotalCases_{LAST_DAYS}Days')
+            plt.savefig(os.path.join(rel_path, f'Images/{COUNTRY}_TotalCases_{LAST_DAYS}Days'))
             #plt.show()
             plt.clf()
 
