@@ -354,7 +354,7 @@ def subscribe(message):
 
 @bot.message_handler(commands=['SendAll'])
 def SendIt(message):
-    msg = message.chat.text
+    msg = message.text
     if message.chat.id in admins:
         for user in admins:
             bot.send_message(user, text=msg)
