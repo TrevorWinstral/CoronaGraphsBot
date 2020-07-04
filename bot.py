@@ -286,8 +286,6 @@ def pkl_dump(message):
 
     else:
         bot.send_message(admins[0], f'chat id: {chat_id}')
-
-    else:
         bot.send_message(chat_id, text='Insufficient Permissions')
 
 
