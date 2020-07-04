@@ -264,33 +264,33 @@ def briefing():
     for user in user_dict:
         try:
             if user_dict[user][Subscribed] == True:
-            chat_id = user
-            graphTypes = ['Deaths', 'TotalCases', 'ActiveCases', 'NewCases']
-            imgFiles = [
-                f"{user_dict[chat_id]['Country']}_{graph}_{user_dict[chat_id]['Days']}Days.png" for graph in graphTypes]
+                chat_id = user
+                graphTypes = ['Deaths', 'TotalCases', 'ActiveCases', 'NewCases']
+                imgFiles = [
+                    f"{user_dict[chat_id]['Country']}_{graph}_{user_dict[chat_id]['Days']}Days.png" for graph in graphTypes]
 
-            for img in imgFiles:
-                try:
-                    photo = open(f'Images/{img}', 'rb')
-                    bot.send_photo(chat_id, photo)
-                    photo.close()
-                except:
-                    bot.send_message(chat_id, text=f'No Image found for {img.split("_")[1]}')
+                for img in imgFiles:
+                    try:
+                        photo = open(f'Images/{img}', 'rb')
+                        bot.send_photo(chat_id, photo)
+                        photo.close()
+                    except:
+                        bot.send_message(chat_id, text=f'No Image found for {img.split("_")[1]}')
 
-                    if chat_id in admins:
-                        bot.send_message(chat_id, text=f'File: {img}')
-                try:
-                    photo = open(f"Images/{user_dict[chat_id]['Country']}_RawTable.png", 'rb')
-                    bot.send_photo(chat_id, photo)
-                    photo.close()
-                except:
-                    bot.send_message(chat_id, text=f'No Image found for {user_dict[chat_id]["Country"]} RawTable')
+                        if chat_id in admins:
+                            bot.send_message(chat_id, text=f'File: {img}')
+                    try:
+                        photo = open(f"Images/{user_dict[chat_id]['Country']}_RawTable.png", 'rb')
+                        bot.send_photo(chat_id, photo)
+                        photo.close()
+                    except:
+                        bot.send_message(chat_id, text=f'No Image found for {user_dict[chat_id]["Country"]} RawTable')
 
-                    if chat_id in admins:
-                        bot.send_message(chat_id, text=f"File: Images/{user_dict[chat_id]['Country']}_RawTable.png")
+                        if chat_id in admins:
+                            bot.send_message(chat_id, text=f"File: Images/{user_dict[chat_id]['Country']}_RawTable.png")
 
 
-            bot.send_message(chat_id, text='This has been your daily briefing, to unsubscribe use /Unsub')
+                bot.send_message(chat_id, text='This has been your daily briefing, to unsubscribe use /Unsub')
                 
         except:
             user_dict[user][Subscribed] = False
