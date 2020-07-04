@@ -303,7 +303,7 @@ def unsubscribe(message):
     global user_dict
     chat_id = message.chat.id
     user_dict[chat_id]['Subscribed'] = False
-    bot.send_message(chat_id, text='You have unsubscribed from your daily briefing.')
+    bot.send_message(chat_id, text='You have unsubscribed from your daily briefing. To subscribe use /Sub')
     time_check(force=True)
     menu(message)
     return
@@ -313,7 +313,7 @@ def subscribe(message):
     global user_dict
     chat_id = message.chat.id
     user_dict[chat_id]['Subscribed'] = True
-    bot.send_message(chat_id, text='You have successfully subscribed to be daily briefed')
+    bot.send_message(chat_id, text='You have successfully subscribed to be daily briefed. To unsubscribe use /Unsub')
     time_check(force=True)
     menu(message)
     return
