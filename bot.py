@@ -85,7 +85,7 @@ def help_fct(message):
     bot.send_message(chat_id, text='/start /menu /ExplainData')
 
 
-@bot.message_hander(commands=['Tutorial', 'tutorial'])
+@bot.message_handler(commands=['Tutorial', 'tutorial'])
 def tutorial(message):
     chat_it = message.chat.id
     bot.send_message(chat_id,
