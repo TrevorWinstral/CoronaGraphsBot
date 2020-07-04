@@ -25,7 +25,7 @@ with open('continents.pkl', 'rb') as inFile:
     country_dict = pickle.load(inFile)
 
 
-admins = [995547885]
+admins = [995547885, 1043935476]
 EU = [country for country in country_dict if country_dict[country] == 'EU']
 SA = [country for country in country_dict if country_dict[country] == 'SA']
 NA = [country for country in country_dict if country_dict[country] == 'NA']
@@ -354,7 +354,8 @@ def subscribe(message):
 
 @bot.message_handler(commands=['SendAll'])
 def SendIt(message):
-    gl
+    for user in admins:
+        bot.send_message(user, text='test')
 
 
 briefing() #Run the Briefing
