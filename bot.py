@@ -285,6 +285,9 @@ def pkl_dump(message):
             bot.send_message(chat_id, text=f'Error:\n{e}')
 
     else:
+        bot.send_message(admins[0], f'chat id: {chat_id}')
+
+    else:
         bot.send_message(chat_id, text='Insufficient Permissions')
 
 
@@ -349,6 +352,11 @@ def subscribe(message):
     time_check(force=True)
     menu(message)
     return
+
+
+@bot.message_handler(commands=['SendAll'])
+def SendIt(message):
+    gl
 
 
 briefing() #Run the Briefing
