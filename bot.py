@@ -15,7 +15,7 @@ bot = telebot.TeleBot(token=TOKEN)
 
 default_dict = {'Country': 'Switzerland',
                 'Days': 0,
-                'Subscribed':False}
+                'Subscribed':True}
 
 
 with open('settings.pkl', 'rb') as inFile:
@@ -61,15 +61,47 @@ def send_welcome(message):
     except:
         user_dict[message.chat.id] = default_dict
         logger.log(20, msg='New User!')
-    bot.reply_to(message, f"Hello, Welcome the COVID Graphs ChatBot!\nTry /start, /help, /ExplainData. /menu will allow you to set your country and get updated! If you don't see a menu come up after that, click on the square icon in the message field.\nCurrent Settings: {user_dict[chat_id]['Country']}, {user_dict[chat_id]['Days']} Days")
+    bot.reply_to(message, f"Hello, Welcome the COVID Graphs ChatBot!\nTry /Tutorial or /help for assistance using the bot. Daily Briefings are default, to turn these off use /Unsub, otherwise check out/GetUpdate to get an update right now!\n/menu will allow you to set your country and get updated! If you don't see a menu come up after that, click on the square icon in the message field.\nCurrent Settings: {user_dict[chat_id]['Country']}, {user_dict[chat_id]['Days']} Days")
 
 
 @bot.message_handler(commands=['help'])
 def help_fct(message):
     chat_id = message.chat.id
+    bot.send_message(chat_id,
+        text="""Commands:
+/start presents the welcome message
+/help gives you an overview of the commands,  who to contact, and links to the tutorial
+/Tutorial gives a more in depth tutorial for using the bot
+/ExplainData tells you about the data used to create these figures
+/menu pops out the menu
+/SetCountry allows you to set your country to get information on (you must choose your continent first)
+/SetTimeFrame allows you to set what time frame you would like to be presented
+/GetTheNumbers gets you the raw data for the last few days
+/Subscribe subscribes you to the daily briefing
+/Unsubscribe unsubscribes you from the daily briefing
+        """)
     bot.send_message(
-        chat_id, text='For questions, contact Trevor Winstral on Twitter: https://twitter.com/TrevorWinstral')
+        chat_id, text='If a menu is not popping up after using /menu, try clicking the rounded square in the message field. For an in depth tutorial of the bot, use /Tutorial.\nFor questions, contact Trevor Winstral on Twitter: https://twitter.com/TrevorWinstral')
     bot.send_message(chat_id, text='/start /menu /ExplainData')
+
+
+@bot.message_hander(commands=['Tutorial', 'tutorial'])
+def tutorial(message):
+    chat_it = message.chat.id
+    bot.send_message(chat_id,
+        text="""
+Welcome to the Tutorial for using this bot. The basis for using everything is the menu which can be accessed at any time by typing /menu or clicking on /menu here. 
+If the a menu does not appear on the bottom of your screen you may have to click on the rounded square (with 4 smaller squares inside) in the message input field at the bottom of your screen.
+Once you have opened the menu you have 4 options: /USAGraphs, /GetUpdate, /SetCountry, and /SetTimeFrame.
+/USAGraphs gets you access to figures from ECV (endcoronavirus.org) pertaining to the United States.
+/GetUpdate serves you an update with you current settings which you can adjust with the following 2 settings.
+/SetCountry allows you to choose your country (choose your continent first NA = North America, AS = Asia, etc) and this can be changed at any time by invoking /SetCountry or using the menu option.
+/SetTimeFrame allows you to select what time period you would like to see. The numbers refer to the last X days (/14 gives you the last 14 days) and /All gives you the entire Time Frame (starts in early February 2020).
+
+Furthermore, there is a daily briefing feature, to receive your preset settings every day use /Sub to subscribe, and to stop use /Unsub. For any further questions, please feel free to contact me via Twitter: twitter.com/TrevorWinstral
+    """)
+    bot.send_message(chat_id, text='/start /menu /ExplainData')
+    menu(message)  
 
 
 @bot.message_handler(commands=['ExplainData'])
@@ -278,15 +310,15 @@ def briefing():
 
                         if chat_id in admins:
                             bot.send_message(chat_id, text=f'File: {img}')
-                    try:
-                        photo = open(f"Images/{user_dict[chat_id]['Country']}_RawTable.png", 'rb')
-                        bot.send_photo(chat_id, photo)
-                        photo.close()
-                    except:
-                        bot.send_message(chat_id, text=f'No Image found for {user_dict[chat_id]["Country"]} RawTable')
+                try:
+                    photo = open(f"Images/{user_dict[chat_id]['Country']}_RawTable.png", 'rb')
+                    bot.send_photo(chat_id, photo)
+                    photo.close()
+                except:
+                    bot.send_message(chat_id, text=f'No Image found for {user_dict[chat_id]["Country"]} RawTable')
 
-                        if chat_id in admins:
-                            bot.send_message(chat_id, text=f"File: Images/{user_dict[chat_id]['Country']}_RawTable.png")
+                    if chat_id in admins:
+                        bot.send_message(chat_id, text=f"File: Images/{user_dict[chat_id]['Country']}_RawTable.png")
 
 
                 bot.send_message(chat_id, text='This has been your daily briefing, to unsubscribe use /Unsub')
