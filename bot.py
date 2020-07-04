@@ -300,6 +300,16 @@ def briefing():
                 graphTypes = ['Deaths', 'TotalCases', 'ActiveCases', 'NewCases']
                 imgFiles = [
                     f"{user_dict[chat_id]['Country']}_{graph}_{user_dict[chat_id]['Days']}Days.png" for graph in graphTypes]
+                
+                try:
+                    photo = open(f"Images/{user_dict[chat_id]['Country']}_RawTable.png", 'rb')
+                    bot.send_photo(chat_id, photo)
+                    photo.close()
+                except:
+                    bot.send_message(chat_id, text=f'No Image found for {user_dict[chat_id]["Country"]} RawTable')
+
+                    if chat_id in admins:
+                        bot.send_message(chat_id, text=f"File: Images/{user_dict[chat_id]['Country']}_RawTable.png")
 
                 for img in imgFiles:
                     try:
@@ -311,16 +321,7 @@ def briefing():
 
                         if chat_id in admins:
                             bot.send_message(chat_id, text=f'File: {img}')
-                try:
-                    photo = open(f"Images/{user_dict[chat_id]['Country']}_RawTable.png", 'rb')
-                    bot.send_photo(chat_id, photo)
-                    photo.close()
-                except:
-                    bot.send_message(chat_id, text=f'No Image found for {user_dict[chat_id]["Country"]} RawTable')
-
-                    if chat_id in admins:
-                        bot.send_message(chat_id, text=f"File: Images/{user_dict[chat_id]['Country']}_RawTable.png")
-
+                
 
                 bot.send_message(chat_id, text='This has been your daily briefing, to unsubscribe use /Unsub')
                 
@@ -356,7 +357,7 @@ def subscribe(message):
 def SendIt(message):
     msg = message.text.replace('/SendAll ', '')
     if message.chat.id in admins:
-        for user in user_dict:
+        for user in admins:
             bot.send_message(user, text=msg)
 
 
