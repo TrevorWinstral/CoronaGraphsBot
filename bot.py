@@ -354,8 +354,10 @@ def subscribe(message):
 
 @bot.message_handler(commands=['SendAll'])
 def SendIt(message):
-    for user in admins:
-        bot.send_message(user, text='test')
+    msg = message.chat.text
+    if message.chat.id in admins:
+        for user in admins:
+            bot.send_message(user, text=msg)
 
 
 briefing() #Run the Briefing
