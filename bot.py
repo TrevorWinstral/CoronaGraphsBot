@@ -37,7 +37,6 @@ Countries = [country for country in country_dict]
 
 START = time.time()
 
-briefing() #Run the Briefing
 
 def time_check(force=False):
     global START
@@ -318,6 +317,9 @@ def subscribe(message):
     time_check(force=True)
     menu(message)
     return
+
+
+briefing() #Run the Briefing
 
 while True:
     try:
