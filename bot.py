@@ -14,7 +14,8 @@ bot = telebot.TeleBot(token=TOKEN)
 
 
 default_dict = {'Country': 'Switzerland',
-                'Days': 0}
+                'Days': 0,
+                'Subscribed':False}
 
 
 with open('settings.pkl', 'rb') as inFile:
@@ -36,11 +37,12 @@ Countries = [country for country in country_dict]
 
 START = time.time()
 
+briefing() #Run the Briefing
 
-def time_check():
+def time_check(force=False):
     global START
     diff = time.time() - START
-    if diff >= (60*10):  # update at most every 10 minutes
+    if diff >= (60*10) or force=True:  # update at most every 10 minutes or when forced
         logger.log(20, msg=f'Total Users: {len(user_dict)}')
         with open('settings.pkl', 'wb') as outFile:
             pickle.dump(user_dict, outFile)
@@ -158,7 +160,7 @@ def country_set(message):
     bot.send_message(
         chat_id, text=f"Country set to {user_dict[chat_id]['Country']}")
 
-    time_check()
+    time_check(force=True)
     menu(message)
 
 
@@ -192,7 +194,7 @@ def set_time_frame(message):
     bot.send_message(
         chat_id, text=f'Time Frame set to {message.text[1:]} Days')
 
-    time_check()
+    time_check(force=True)
     menu(message)
 
 
@@ -254,6 +256,68 @@ def pkl_dump(message):
     else:
         bot.send_message(chat_id, text='Insufficient Permissions')
 
+
+def briefing():
+    global user_dict
+    global admins
+
+    for user in user_dict:
+        try:
+            if user_dict[user][Subscribed] == True:
+            chat_id = user
+            graphTypes = ['Deaths', 'TotalCases', 'ActiveCases', 'NewCases']
+            imgFiles = [
+                f"{user_dict[chat_id]['Country']}_{graph}_{user_dict[chat_id]['Days']}Days.png" for graph in graphTypes]
+
+            for img in imgFiles:
+                try:
+                    photo = open(f'Images/{img}', 'rb')
+                    bot.send_photo(chat_id, photo)
+                    photo.close()
+                except:
+                    bot.send_message(chat_id, text=f'No Image found for {img.split("_")[1]}')
+
+                    if chat_id in admins:
+                        bot.send_message(chat_id, text=f'File: {img}')
+                try:
+                    photo = open(f"Images/{user_dict[chat_id]['Country']}_RawTable.png", 'rb')
+                    bot.send_photo(chat_id, photo)
+                    photo.close()
+                except:
+                    bot.send_message(chat_id, text=f'No Image found for {user_dict[chat_id]["Country"]} RawTable')
+
+                    if chat_id in admins:
+                        bot.send_message(chat_id, text=f"File: Images/{user_dict[chat_id]['Country']}_RawTable.png")
+
+
+            bot.send_message(chat_id, text='This has been your daily briefing, to unsubscribe use /Unsub')
+                
+        except:
+            user_dict[user][Subscribed] = False
+
+
+    return
+
+
+@bot.message_handler(commands=['Unsub', 'Unsubscribe'])
+def unsubscribe(message):
+    global user_dict
+    chat_id = message.chat.id
+    user_dict[chat_id][Subscribed] = False
+    bot.send_message(chat_id, text='You have unsubscribed from your daily briefing.')
+    time_check(force=True)
+    menu(message)
+    return
+
+@bot.message_handler(commands=['Sub', 'Subscribe'])
+def subscribe(message):
+    global user_dict
+    chat_id = message.chat.id
+    user_dict[chat_id][Subscribed] = True
+    bot.send_message(chat_id, text='You have successfully subscribed to be daily briefed')
+    time_check(force=True)
+    menu(message)
+    return
 
 while True:
     try:
