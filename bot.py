@@ -357,7 +357,8 @@ def subscribe(message):
 def SendIt(message):
     msg = message.text.replace('/SendAll ', '')
     if message.chat.id in admins:
-        for user in admins:
+        for user in user_dict:
+            time.sleep(2)
             bot.send_message(user, text=msg)
 
 
