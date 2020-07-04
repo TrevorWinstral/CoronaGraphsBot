@@ -262,7 +262,7 @@ def briefing():
 
     for user in user_dict:
         try:
-            if user_dict[user][Subscribed] == True:
+            if user_dict[user]['Subscribed'] == True:
                 chat_id = user
                 graphTypes = ['Deaths', 'TotalCases', 'ActiveCases', 'NewCases']
                 imgFiles = [
@@ -292,7 +292,7 @@ def briefing():
                 bot.send_message(chat_id, text='This has been your daily briefing, to unsubscribe use /Unsub')
                 
         except:
-            user_dict[user][Subscribed] = False
+            user_dict[user]['Subscribed'] = False
 
 
     return
@@ -302,7 +302,7 @@ def briefing():
 def unsubscribe(message):
     global user_dict
     chat_id = message.chat.id
-    user_dict[chat_id][Subscribed] = False
+    user_dict[chat_id]['Subscribed'] = False
     bot.send_message(chat_id, text='You have unsubscribed from your daily briefing.')
     time_check(force=True)
     menu(message)
@@ -312,7 +312,7 @@ def unsubscribe(message):
 def subscribe(message):
     global user_dict
     chat_id = message.chat.id
-    user_dict[chat_id][Subscribed] = True
+    user_dict[chat_id]['Subscribed'] = True
     bot.send_message(chat_id, text='You have successfully subscribed to be daily briefed')
     time_check(force=True)
     menu(message)
