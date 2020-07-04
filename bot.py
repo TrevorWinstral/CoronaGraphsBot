@@ -61,7 +61,7 @@ def send_welcome(message):
     except:
         user_dict[message.chat.id] = default_dict
         logger.log(20, msg='New User!')
-    bot.reply_to(message, f"Hello, Welcome the COVID Graphs ChatBot!\nTry /Tutorial or /help for assistance using the bot. Daily Briefings are default, to turn these off use /Unsub, otherwise check out/GetUpdate to get an update right now!\n/menu will allow you to set your country and get updated! If you don't see a menu come up after that, click on the square icon in the message field.\nCurrent Settings: {user_dict[chat_id]['Country']}, {user_dict[chat_id]['Days']} Days")
+    bot.reply_to(message, f"Hello, Welcome the COVID Graphs ChatBot!\nTry /Tutorial or /help for assistance using the bot. Daily Briefings are default, to turn these off use /Unsub, otherwise check out /GetUpdate to get an update right now!\n/menu will allow you to set your country and get updated! If you don't see a menu come up after that, click on the square icon in the message field.\nCurrent Settings: {user_dict[chat_id]['Country']}, {user_dict[chat_id]['Days']} Days")
 
 
 @bot.message_handler(commands=['help'])
@@ -87,7 +87,7 @@ def help_fct(message):
 
 @bot.message_handler(commands=['Tutorial', 'tutorial'])
 def tutorial(message):
-    chat_it = message.chat.id
+    chat_id = message.chat.id
     bot.send_message(chat_id,
         text="""
 Welcome to the Tutorial for using this bot. The basis for using everything is the menu which can be accessed at any time by typing /menu or clicking on /menu here. 
