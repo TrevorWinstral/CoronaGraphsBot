@@ -42,7 +42,7 @@ briefing() #Run the Briefing
 def time_check(force=False):
     global START
     diff = time.time() - START
-    if diff >= (60*10) or force=True:  # update at most every 10 minutes or when forced
+    if diff >= (60*10) or force==True:  # update at most every 10 minutes or when forced
         logger.log(20, msg=f'Total Users: {len(user_dict)}')
         with open('settings.pkl', 'wb') as outFile:
             pickle.dump(user_dict, outFile)
