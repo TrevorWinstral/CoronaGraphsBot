@@ -31,7 +31,7 @@ def main():
     data = pd.read_csv(DATA_FILE, quotechar='"')
     data.drop('Unnamed: 0', 1, inplace=True)
 
-    Days = [0, 14, 30, 60]
+    Days = [0, 14, 30, 60, 90]
     for COUNTRY in countries:
         for LAST_DAYS in Days:
             print(f"Plotting {COUNTRY} {LAST_DAYS} Days")
@@ -51,7 +51,7 @@ def main():
                 ticks = country['Date'][::-1*stepsize][::-1]
                 return(locs, ticks)
 
-            quick_dict = {0: 'All', 14:'Last 14', 30:'Last 30', 60:'Last 60'} # mostly just to convert 0 days to all days in title
+            quick_dict = {0: 'All', 14:'Last 14', 30:'Last 30', 60:'Last 60', 90:'Last 90'} # mostly just to convert 0 days to all days in title
 
             country = country.iloc[-1*LAST_DAYS:]
 

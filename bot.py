@@ -203,6 +203,7 @@ def choose_time_frame(message):
     markup.add(types.KeyboardButton('/14'))
     markup.add(types.KeyboardButton('/30'))
     markup.add(types.KeyboardButton('/60'))
+    markup.add(types.KeyboardButton('/90'))
     markup.add(types.KeyboardButton('/All'))
     markup.add(types.KeyboardButton('/menu'))
 
@@ -210,12 +211,12 @@ def choose_time_frame(message):
         chat_id, text='Time Frame can be set to last 14, 30, 60, or All Days', reply_markup=markup)
 
 
-@bot.message_handler(commands=['14', '30', '60', 'All'])
+@bot.message_handler(commands=['14', '30', '60','90', 'All'])
 def set_time_frame(message):
     global user_dict
     chat_id = message.chat.id
 
-    days_dict = {'/14': 14, '/30': 30, '/60': 60, '/All': 0}
+    days_dict = {'/14': 14, '/30': 30, '/60': 60, '/90':90, '/All': 0}
 
     try:
         user_dict[chat_id]['Days'] = days_dict[message.text]
