@@ -94,7 +94,7 @@ def tutorial(message):
 Welcome to the Tutorial for using this bot. The basis for using everything is the menu which can be accessed at any time by typing /menu or clicking on /menu here. 
 If the a menu does not appear on the bottom of your screen you may have to click on the rounded square (with 4 smaller squares inside) in the message input field at the bottom of your screen.
 Once you have opened the menu you have 4 options: /USAGraphs, /GetUpdate, /SetCountry, and /SetTimeFrame.
-/USAGraphs gets you access to figures from ECV (endcoronavirus.org) pertaining to the United States.
+/USAGraphs (not added yet) gets you access to figures from ECV (endcoronavirus.org) pertaining to the United States.
 /GetUpdate serves you an update with you current settings which you can adjust with the following 2 settings.
 /SetCountry allows you to choose your country (choose your continent first NA = North America, AS = Asia, etc) and this can be changed at any time by invoking /SetCountry or using the menu option.
 /SetTimeFrame allows you to select what time period you would like to see. The numbers refer to the last X days (/14 gives you the last 14 days) and /All gives you the entire Time Frame (starts in early February 2020).
