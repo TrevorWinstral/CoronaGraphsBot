@@ -1,2 +1,4 @@
 Images/*
 .vscode
+*.log
+*.sh
