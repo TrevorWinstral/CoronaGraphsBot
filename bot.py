@@ -185,9 +185,11 @@ def country_set(message):
 
     try:
         user_dict[chat_id]['Country'] = message.text[1:].replace('_', ' ')
-    except:
+    except KeyError:
         user_dict[chat_id] = default_dict
         user_dict[chat_id]['Country'] = message.text[1:].replace('_', ' ')
+    except Exception as e:
+        logger.log(20, f'Somewhat real Error: {e}')
 
     bot.send_message(
         chat_id, text=f"Country set to {user_dict[chat_id]['Country']}")
@@ -221,9 +223,12 @@ def set_time_frame(message):
 
     try:
         user_dict[chat_id]['Days'] = days_dict[message.text]
-    except:
+    except KeyError:
         user_dict[chat_id] = default_dict
         user_dict[chat_id]['Days'] = days_dict[message.text]
+    except Exception as e:
+        logger.log(20, f'Somewhat real Error: {e}')
+        
     bot.send_message(
         chat_id, text=f'Time Frame set to {message.text[1:]} Days')
 
