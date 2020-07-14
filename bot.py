@@ -237,6 +237,7 @@ def get_update(message):
     chat_id = message.chat.id
     graphTypes = ['Deaths', 'TotalCases', 'ActiveCases', 'NewCases']
     print(f'A user has requested: {user_dict[chat_id]}')
+    logger.log(20, f'A user has requested: {user_dict[chat_id]}')
     imgFiles = [
         f"{user_dict[chat_id]['Country']}_{graph}_{user_dict[chat_id]['Days']}Days.png" for graph in graphTypes]
 
@@ -325,7 +326,7 @@ def briefing():
                             bot.send_message(chat_id, text=f'File: {img}')
                 
 
-                bot.send_message(chat_id, text='This has been your daily briefing, to unsubscribe use /Unsub')
+                bot.send_message(chat_id, text='This has been your daily briefing. To unsubscribe use /Unsub')
                 
         except:
             user_dict[user]['Subscribed'] = False
@@ -364,7 +365,7 @@ def SendIt(message):
             bot.send_message(user, text=msg)
 
 
-briefing() #Run the Briefing
+#briefing() #Run the Briefing
 
 while True:
     try:
