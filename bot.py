@@ -237,7 +237,7 @@ def get_update(message):
     chat_id = message.chat.id
     graphTypes = ['Deaths', 'TotalCases', 'ActiveCases', 'NewCases']
     print(f'A user has requested: {user_dict[chat_id]}')
-    logger.log(20, f'A user has requested: {user_dict[chat_id]}')
+    logger.log(20, f'A user ({chat_id}) has requested: {user_dict[chat_id]}')
     imgFiles = [
         f"{user_dict[chat_id]['Country']}_{graph}_{user_dict[chat_id]['Days']}Days.png" for graph in graphTypes]
 
