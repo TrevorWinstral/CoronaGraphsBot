@@ -47,7 +47,7 @@ def time_check(force=False):
         with open('settings.pkl', 'wb') as outFile:
             pickle.dump(user_dict, outFile)
             logger.log(
-                20, msg=f'{time.strftime("%a, %d %b %Y %H:%M:%S", time.gmtime())} Dumping User Preferences to pickle')
+                20, msg=f'Dumping User Preferences to pickle at {os.path.abspath("settings.pkl")}')
         START = time.time()
     return
 
@@ -287,7 +287,7 @@ def pkl_dump(message):
             with open('settings.pkl', 'wb') as outFile:
                 pickle.dump(user_dict, outFile)
                 logger.log(
-                    20, msg=f'{time.strftime("%a, %d %b %Y %H:%M:%S", time.gmtime())} Dumping User Preferences to pickle')
+                    20, msg=f'Dumping User Preferences to pickle at {os.path.abspath("settings.pkl")}')
             bot.send_message(chat_id, text=f'User Settings Dumped, Total Users: {len(user_dict)}')
         except Exception as e:
             bot.send_message(chat_id, text=f'Error:\n{e}')
@@ -302,8 +302,11 @@ def briefing():
     global admins
 
     for user in user_dict:
+        logger.log(20, f'Attempting to send briefing to f{user}: {user_dict[user]}')
         try:
+
             if user_dict[user]['Subscribed'] == True:
+                logger.log(20, f'{""*5}{user} Subbed True {user_dict[user]}')
                 chat_id = user
                 graphTypes = ['Deaths', 'TotalCases', 'ActiveCases', 'NewCases']
                 imgFiles = [
@@ -311,29 +314,32 @@ def briefing():
                 
                 try:
                     photo = open(f"Images/{user_dict[chat_id]['Country']}_RawTable.png", 'rb')
+                    logger.log(20,f'{""*5}Sending Image: {user_dict[chat_id]['Country']}_RawTable.png to user {chat_id}')
                     bot.send_photo(chat_id, photo)
                     photo.close()
-                except:
+                except Exception as e:
                     bot.send_message(chat_id, text=f'No Image found for {user_dict[chat_id]["Country"]} RawTable')
-
+                    logger.log(20, f'{""*5}Image Sending Failed. Error: {e} Image: {user_dict[chat_id]['Country']}_RawTable.png')
                     if chat_id in admins:
                         bot.send_message(chat_id, text=f"File: Images/{user_dict[chat_id]['Country']}_RawTable.png")
 
                 for img in imgFiles:
                     try:
                         photo = open(f'Images/{img}', 'rb')
+                        logger.log(20, f'{""*5}Sending Image (Briefing): {img}')
                         bot.send_photo(chat_id, photo)
                         photo.close()
-                    except:
+                    except Exception as e:
                         bot.send_message(chat_id, text=f'No Image found for {img.split("_")[1]}')
-
+                        logger.log(20, f'{""*5}Image Sending Failed. Error: {e} Image: {img}')
                         if chat_id in admins:
                             bot.send_message(chat_id, text=f'File: {img}')
                 
 
                 bot.send_message(chat_id, text='This has been your daily briefing. To unsubscribe use /Unsub')
                 
-        except:
+        except Exception as e:
+            logger.log(20, f'Error: {e}')
             user_dict[user]['Subscribed'] = False
 
 
@@ -345,6 +351,7 @@ def unsubscribe(message):
     global user_dict
     chat_id = message.chat.id
     user_dict[chat_id]['Subscribed'] = False
+    logger.log(20, f'User: {chat_id} UnSubbed. Settings: {user_dict[chat_id]}')
     bot.send_message(chat_id, text='You have unsubscribed from your daily briefing. To subscribe use /Sub')
     time_check(force=True)
     menu(message)
@@ -355,6 +362,7 @@ def subscribe(message):
     global user_dict
     chat_id = message.chat.id
     user_dict[chat_id]['Subscribed'] = True
+    logger.log(20, f'User: {chat_id} Subbed. Settings: {user_dict[chat_id]}')
     bot.send_message(chat_id, text='You have successfully subscribed to be daily briefed. To unsubscribe use /Unsub')
     time_check(force=True)
     menu(message)
