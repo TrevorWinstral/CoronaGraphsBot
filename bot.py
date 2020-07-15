@@ -19,6 +19,7 @@ default_dict = {'Country': 'Switzerland',
 
 
 with open('settings.pkl', 'rb') as inFile:
+    logger.log(20, f'Loading pickle from {os.path.abspath("settings.pkl")}')
     user_dict = pickle.load(inFile)
 
 with open('continents.pkl', 'rb') as inFile:
