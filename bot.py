@@ -314,12 +314,12 @@ def briefing():
                 
                 try:
                     photo = open(f"Images/{user_dict[chat_id]['Country']}_RawTable.png", 'rb')
-                    logger.log(20,f'{""*5}Sending Image: {user_dict[chat_id]['Country']}_RawTable.png to user {chat_id}')
+                    logger.log(20,f'{""*5}Sending Image: {user_dict[chat_id]["Country"]}_RawTable.png to user {chat_id}')
                     bot.send_photo(chat_id, photo)
                     photo.close()
                 except Exception as e:
                     bot.send_message(chat_id, text=f'No Image found for {user_dict[chat_id]["Country"]} RawTable')
-                    logger.log(20, f'{""*5}Image Sending Failed. Error: {e} Image: {user_dict[chat_id]['Country']}_RawTable.png')
+                    logger.log(20, f'{""*5}Image Sending Failed. Error: {e} Image: {user_dict[chat_id]["Country"]}_RawTable.png')
                     if chat_id in admins:
                         bot.send_message(chat_id, text=f"File: Images/{user_dict[chat_id]['Country']}_RawTable.png")
 
