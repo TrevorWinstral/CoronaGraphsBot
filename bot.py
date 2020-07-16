@@ -379,7 +379,7 @@ def SendIt(message):
             bot.send_message(user, text=msg)
 
 
-#briefing() #Run the Briefing
+briefing() #Run the Briefing
 
 while True:
     try:
