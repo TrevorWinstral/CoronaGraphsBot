@@ -10,7 +10,7 @@ logger = telebot.logger
 telebot.logger.setLevel(logging.INFO)
 TOKEN = os.environ['TELEGRAM_TOKEN']
 
-bot = telebot.TeleBot(token=TOKEN)
+bot = telebot.TeleBot(token=TOKEN, threaded=False)
 
 
 default_dict = {'Country': 'Switzerland',
@@ -303,7 +303,7 @@ def briefing():
     global admins
 
     for user in user_dict:
-        logger.log(20, f'Attempting to send briefing to f{user}: {user_dict[user]}')
+        logger.log(20, f'Attempting to send briefing to {user}: {user_dict[user]}')
         try:
 
             if user_dict[user]['Subscribed'] == True:
@@ -379,7 +379,7 @@ def SendIt(message):
             bot.send_message(user, text=msg)
 
 
-briefing() #Run the Briefing
+#briefing() #Run the Briefing
 
 while True:
     try:
