@@ -3,3 +3,4 @@ pycountry-convert==0.7.2
 pyTelegramBotAPI==3.7.1
 numpy==1.16.2
 matplotlib==3.2.1
+DateTime==4.3

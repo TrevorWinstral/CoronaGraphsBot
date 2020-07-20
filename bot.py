@@ -61,7 +61,7 @@ def send_welcome(message):
     try:
         user_dict[message.chat.id]
     except:
-        user_dict[message.chat.id] = default_dict
+        user_dict[message.chat.id] = default_dict.copy()
         logger.log(20, msg='New User!')
     bot.reply_to(message, f"Hello, Welcome the COVID Graphs ChatBot!\nTry /Tutorial or /help for assistance using the bot. Daily Briefings are default, to turn these off use /Unsub, otherwise check out /GetUpdate to get an update right now!\n/menu will allow you to set your country and get updated! If you don't see a menu come up after that, click on the square icon in the message field.\nCurrent Settings: {user_dict[chat_id]['Country']}, {user_dict[chat_id]['Days']} Days")
 
@@ -189,7 +189,7 @@ def country_set(message):
         user_dict[chat_id]['Country'] = message.text[1:].replace('_', ' ')
         logger.log(20, f'New Settings: {user_dict[chat_id]}')
     except KeyError:
-        user_dict[chat_id] = default_dict
+        user_dict[chat_id] = default_dict.copy()
         user_dict[chat_id]['Country'] = message.text[1:].replace('_', ' ')
         logger.log(20, f'KeyError while trying to set ({chat_id}) to {message.text[1:].replace("_", " ")}.\nNew settings: {user_dict[chat_id]}')
     except Exception as e:
@@ -230,7 +230,7 @@ def set_time_frame(message):
         user_dict[chat_id]['Days'] = days_dict[message.text]
     except KeyError:
         logger.log(20, f'KeyError while changing time settings for ({chat_id})')
-        user_dict[chat_id] = default_dict
+        user_dict[chat_id] = default_dict.copy()
         user_dict[chat_id]['Days'] = days_dict[message.text]
     except Exception as e:
         logger.log(20, f'Somewhat real Error: {e}')
