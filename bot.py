@@ -185,16 +185,20 @@ def country_set(message):
     chat_id = message.chat.id
 
     try:
+        logger.log(20, f'Setting {chat_id} to {message.text[1:].replace('_', ' ')}. Current Settings: {user_dict[chat_id]}')
         user_dict[chat_id]['Country'] = message.text[1:].replace('_', ' ')
+        logger.log(20, f'New Settings: {user_dict[chat_id]}')
     except KeyError:
         user_dict[chat_id] = default_dict
         user_dict[chat_id]['Country'] = message.text[1:].replace('_', ' ')
+        logger.log(20, f'KeyError while trying to set ({chat_id}) to {message.text[1:].replace("_", " ")}.\nNew settings: {user_dict[chat_id]}')
     except Exception as e:
         logger.log(20, f'Somewhat real Error: {e}')
 
     bot.send_message(
         chat_id, text=f"Country set to {user_dict[chat_id]['Country']}")
 
+    logger.log(20, f'User {chat_id} has set their country to {user_dict[chat_id]["Country"]} \n{user_dict[chat_id]}')
     time_check(force=True)
     menu(message)
 
@@ -221,15 +225,17 @@ def set_time_frame(message):
     chat_id = message.chat.id
 
     days_dict = {'/14': 14, '/30': 30, '/60': 60, '/90':90, '/All': 0}
-
+    logger.log(20, f'Attempting to change time settings for ({chat_id}). Current Settings: {user_dict[chat_id]}')
     try:
         user_dict[chat_id]['Days'] = days_dict[message.text]
     except KeyError:
+        logger.log(20, f'KeyError while changing time settings for ({chat_id})')
         user_dict[chat_id] = default_dict
         user_dict[chat_id]['Days'] = days_dict[message.text]
     except Exception as e:
         logger.log(20, f'Somewhat real Error: {e}')
-        
+    
+    logger.log(20, f'Time settings for ({chat_id}) set to: {user_dict[chat_id]}')
     bot.send_message(
         chat_id, text=f'Time Frame set to {message.text[1:]} Days')
 
@@ -252,9 +258,9 @@ def get_update(message):
             photo = open(f'Images/{img}', 'rb')
             bot.send_photo(chat_id, photo)
             photo.close()
-        except:
+        except Exception as e:
             bot.send_message(chat_id, text=f'No Image found for {img.split("_")[1]}')
-
+            logger.log(20, f'Error while attempting to serve {img} to ({chat_id}) with {user_dict[chat_id]}:\n{e}')
             if chat_id in admins:
                 bot.send_message(chat_id, text=f'File: {img}')
 
@@ -269,8 +275,9 @@ def serve_the_numbers(message):
         photo = open(f"Images/{user_dict[chat_id]['Country']}_RawTable.png", 'rb')
         bot.send_photo(chat_id, photo)
         photo.close()
-    except:
+    except Exception as e:
         bot.send_message(chat_id, text=f'No Image found for {user_dict[chat_id]["Country"]} RawTable')
+        logger.log(20, f'Error while attempting to serve {user_dict[chat_id]['Country']}_RawTable.png to ({chat_id}) with {user_dict[chat_id]}:\n{e}')
 
         if chat_id in admins:
             bot.send_message(chat_id, text=f"File: Images/{user_dict[chat_id]['Country']}_RawTable.png")
