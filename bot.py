@@ -235,7 +235,7 @@ def set_time_frame(message):
     except Exception as e:
         logger.log(20, f'Somewhat real Error: {e}')
     
-    logger.log(20, f'Time settings for ({chat_id}) set to: {user_dict[chat_id]}')
+    logger.log(20, f'Time settings for ({chat_id}) set to {days_dict[message.text]}: {user_dict[chat_id]}')
     bot.send_message(
         chat_id, text=f'Time Frame set to {message.text[1:]} Days')
 
@@ -277,7 +277,7 @@ def serve_the_numbers(message):
         photo.close()
     except Exception as e:
         bot.send_message(chat_id, text=f'No Image found for {user_dict[chat_id]["Country"]} RawTable')
-        logger.log(20, f'Error while attempting to serve {user_dict[chat_id]['Country']}_RawTable.png to ({chat_id}) with {user_dict[chat_id]}:\n{e}')
+        logger.log(20, f'Error while attempting to serve {user_dict[chat_id]["Country"]}_RawTable.png to ({chat_id}) with {user_dict[chat_id]}:\n{e}')
 
         if chat_id in admins:
             bot.send_message(chat_id, text=f"File: Images/{user_dict[chat_id]['Country']}_RawTable.png")
