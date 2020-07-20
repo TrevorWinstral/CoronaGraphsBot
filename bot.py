@@ -382,7 +382,7 @@ def SendIt(message):
     msg = message.text.replace('/SendAll ', '')
     if message.chat.id in admins:
         for user in user_dict:
-            time.sleep(2)
+            time.sleep(0.3)
             bot.send_message(user, text=msg)
 
 
