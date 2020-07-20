@@ -185,7 +185,7 @@ def country_set(message):
     chat_id = message.chat.id
 
     try:
-        logger.log(20, f'Setting {chat_id} to {message.text[1:].replace('_', ' ')}. Current Settings: {user_dict[chat_id]}')
+        logger.log(20, f'Setting {chat_id} to {message.text[1:].replace("_", " ")}. Current Settings: {user_dict[chat_id]}')
         user_dict[chat_id]['Country'] = message.text[1:].replace('_', ' ')
         logger.log(20, f'New Settings: {user_dict[chat_id]}')
     except KeyError:
