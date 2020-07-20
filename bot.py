@@ -310,7 +310,7 @@ def briefing():
     global admins
 
     for user in user_dict:
-        logger.log(20, f'Attempting to send briefing to {user}: {user_dict[user]}')
+        logger.log(20, f'\nAttempting to send briefing to {user}: {user_dict[user]}')
         try:
 
             if user_dict[user]['Subscribed'] == True:
@@ -386,7 +386,10 @@ def SendIt(message):
     if message.chat.id in admins:
         for user in user_dict:
             time.sleep(0.3)
-            bot.send_message(user, text=msg)
+            try:
+                bot.send_message(user, text=msg)
+            except Exception as e:
+                logger.log(20, f'Error sending message to ({user}): {e}')
 
 
 briefing() #Run the Briefing
