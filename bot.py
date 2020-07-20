@@ -343,9 +343,12 @@ def briefing():
                         if chat_id in admins:
                             bot.send_message(chat_id, text=f'File: {img}')
                 
+                try:
+                    bot.send_message(chat_id, text='This has been your daily briefing. To unsubscribe use /Unsub')
+                except Exception as e:
+                    logger.log(20, f'Error sending message to ({chat_id}): {e}')
 
-                bot.send_message(chat_id, text='This has been your daily briefing. To unsubscribe use /Unsub')
-                
+
         except Exception as e:
             logger.log(20, f'Error: {e}')
             user_dict[user]['Subscribed'] = False
