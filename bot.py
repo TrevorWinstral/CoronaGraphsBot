@@ -388,6 +388,7 @@ def SendIt(message):
             time.sleep(0.3)
             try:
                 bot.send_message(user, text=msg)
+                logger.log(20, f'Attempting to send mass message to {user}')
             except Exception as e:
                 logger.log(20, f'Error sending message to ({user}): {e}')
 
