@@ -11,7 +11,7 @@ import warnings
 
 warnings.filterwarnings("ignore")
 plt.style.use('ggplot')
-os.nice(0)
+#os.nice(0)
 #print('this is a test')
 rel_path = "/".join(os.path.abspath(__file__).split('/')[:-1])
 DATA_FILE= os.path.join(rel_path, 'data.csv')
@@ -53,7 +53,7 @@ def main():
 
             quick_dict = {0: 'All', 14:'Last 14', 30:'Last 30', 60:'Last 60', 90:'Last 90'} # mostly just to convert 0 days to all days in title
 
-            country = country.iloc[-1*LAST_DAYS:]
+            country = country.iloc[-1*LAST_DAYS:] # this is stupid, but I don't want to type in the indexing every time
 
             steps = 15
 
