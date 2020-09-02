@@ -2,7 +2,7 @@ import pandas as pd
 import os
 
 URL = 'https://raw.github.com/datasets/covid-19/master/data/countries-aggregated.csv'
-URL = 'https://raw.github.com/TrevorWinstral/COVID_simplified/master/international_time_series.csv'
+URL = 'https://raw.github.com/TrevorWinstral/COVID_simplified/master/countries-aggregated..csv'
 rel_path = '/'.join(os.path.abspath(__file__).split('/')[:-1])
 out_file = os.path.join(rel_path, 'data.csv')
 print(out_file)
