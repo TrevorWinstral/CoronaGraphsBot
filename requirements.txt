@@ -1,6 +1,6 @@
 pandas==1.0.3
 pycountry-convert==0.7.2
 pyTelegramBotAPI==3.7.1
-numpy==1.16.2
+numpy==1.22.0
 matplotlib==3.2.1
 DateTime==4.3
